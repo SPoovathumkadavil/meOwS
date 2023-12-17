@@ -113,21 +113,42 @@ void shift_terminalrowsup() {
  
 void terminal_putchar(char c) 
 {
-	if (c == '\n') {
-		if (!(terminal_row == VGA_HEIGHT)) terminal_row++;
-		terminal_column = 0;
-		return;
-	}
-	if (terminal_row == VGA_HEIGHT) {
-		terminal_column = 0;
-		shift_terminalrowsup();
-	}
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (!(terminal_row == VGA_HEIGHT)) terminal_row++;
-	}
+	// if (c == '\n') {
+	// 	if (!(terminal_row == VGA_HEIGHT)) terminal_row++;
+	// 	terminal_column = 0;
+	// 	return;
+	// }
+	// terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	// if (terminal_row == VGA_HEIGHT) {
+	// 	terminal_column = 0;
+	// 	shift_terminalrowsup();
+	// }
+	// if (++terminal_column == VGA_WIDTH) {
+	// 	terminal_column = 0;
+	// 	if (!(terminal_row == VGA_HEIGHT)) terminal_row++;
+	// }
 
+  // NEW
+
+  // First Increment and do checks
+  terminal_column++;
+  if (terminal_column == VGA_WIDTH) {
+    terminal_column = 0;
+    terminal_row++;
+  } else if (c == '\n') {
+    terminal_column = 0;
+    terminal_row++;
+    return;
+  }
+
+  if (terminal_row == VGA_HEIGHT) {
+    shift_terminalrowsup();
+    terminal_column = 0;
+    terminal_row--;
+  }
+
+  // Then Put Entry
+  terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 }
  
 void terminal_write(const char* data, size_t size) 
@@ -155,15 +176,32 @@ void kernel_main(void)
 	terminal_writestring("3. Yeah Baby\n");
 	terminal_writestring("4. Yeah Baby\n");
 	terminal_writestring("5. Yeah Baby\n");
-	terminal_writestring("6. Yeah Baby\n");
 	terminal_writestring("7. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
+	terminal_writestring("6. Yeah Baby\n");
 	terminal_writestring("8. Yeah Baby\n");
 	terminal_writestring("Yeah Baby\n");
 	terminal_writestring("Yeah Baby\n");
-
-	shift_terminalrowsup();
-
-	terminal_writestring("OhYeah");
-
-	shift_terminalrowsup();
+  terminal_writestring("The Last One Oh YEah!");
 }
