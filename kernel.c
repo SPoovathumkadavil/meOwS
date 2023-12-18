@@ -1052,14 +1052,14 @@ void kernel_main(void)
 
 	terminal_setcolor(VGA_COLOR_CYAN);
 
+  char s[11];
+
   for (int i = 0; i < 40; i++) {
-    terminal_writestring("I ran\n");
+    snprintf_(s, 11, "I ran %i\n", i);
+    terminal_writestring(s);
   }
 
-  char s[10];
-
-  snprintf_(s, 10, "Yeah%i", 22);
-
-  terminal_writestring(s);
+  printf_("Yeah Baby %i\n", 2);
+  printf_("Its All Good!!");
 
 }
