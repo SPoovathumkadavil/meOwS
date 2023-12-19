@@ -92,15 +92,15 @@ biso:
 	cp $(SRC_DIR)/grub.cfg $(ISODIR_GRUB)/grub.cfg
 	grub-mkrescue -o $(OUT_ISO) $(ISODIR)
 
-rebuild: print clean build biso
+rebuild: print clean bboot build biso
 	echo "Full Clean and Make done..."
 
 all: rebuild run
 
 clean:
 	echo "Clean up..."
-	rm -rf $(OBJS_DIR)
-
+	rm -rf $(OBJ_DIR)
+	mkdir build
 	rm -f $(BIN_DIR)/*~ $(BIN_DIR)/*.bin
 
 print:
