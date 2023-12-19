@@ -1,5 +1,6 @@
-#include "terminal.h"
+#include <terminal.h>
 #include "kernel.h"
+#include <nstdout.h>
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -28,4 +29,5 @@ void kernel_main(void)
   terminal_writecenteredstring(" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
   terminal_writecenteredstring("|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
 
+  printf_("Yeah Its All Good Baby %i \n", 66);
 }

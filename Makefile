@@ -82,7 +82,7 @@ list:
 	echo "run     ---> run virtual test"
 	echo "all     ---> clean, build, then run"
 	echo "files   ---> show what source files will be used when building"
-	echo "print   ---> prints a sick message"
+	echo "print   ---> prints a the name of a the a thing"
 	echo "biso    ---> builds the iso from the .bin file"
 	echo "bboot   ---> builds the boot.o"
 
