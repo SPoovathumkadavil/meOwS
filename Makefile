@@ -15,7 +15,7 @@ SRC_FILES := $(ASM_SRC_FILES) $(C_SRC_FILES) $(CPP_SRC_FILES)
 OBJ_FILES := $(subst $(SRC_DIR), $(OBJ_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
 
 OUT = $(BIN_DIR)/meows.bin
-OUT_ISO = $(addprefix .iso, $(basename $(OUT)))
+OUT_ISO = $(addsuffix .iso, $(basename $(OUT)))
 
 # C and Cpp Common Flags
 COMMON_FLAGS = -g -c -O2 -ffreestanding -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
@@ -89,7 +89,7 @@ biso:
 	mkdir -p $(ISODIR_GRUB)
 	cp $(OUT) $(ISODIR_BOOT)/$(notdir $(OUT))
 	cp $(SRC_DIR)/grub.cfg $(ISODIR_GRUB)/grub.cfg
-	grub-mkrescue -o $(notdir $(OUT_ISO)) $(ISODIR)
+	grub-mkrescue -o $(OUT_ISO) $(ISODIR)
 
 rebuild: print clean build biso
 	echo "Full Clean and Make done..."
@@ -108,5 +108,5 @@ print:
 	
 run:
 	echo "Starting QEMU"
-	qemu-system-i386 -cdrom OUT_ISO
+	qemu-system-i386 -cdrom $(OUT_ISO)
 
