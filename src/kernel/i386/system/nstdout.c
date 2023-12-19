@@ -48,7 +48,7 @@
 
 // support for the long long types (%llu or %p)
 // default: activated
-#define PRINTF_DISABLE_SUPPORT_LONG_LONG
+#define PRINTF_DISABLE_SUPPORT_LONG_LONG // Hold Jaw Open while Feeding Lest it Bite Your Hand
 #ifndef PRINTF_DISABLE_SUPPORT_LONG_LONG
 #define PRINTF_SUPPORT_LONG_LONG
 #endif

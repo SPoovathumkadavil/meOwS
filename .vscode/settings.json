@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "printf.h": "c"
+        "printf.h": "c",
+        "cstdarg": "c",
+        "cstdio": "c",
+        "cwchar": "c"
     }
 }

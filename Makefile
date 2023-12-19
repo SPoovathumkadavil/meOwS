@@ -2,13 +2,16 @@
 #NOTE: $@ is right of the :, and $< is the left
 MAKEFLAGS = -s #silent
 
-SRC_DIR = src/kernel
 BIN_DIR = bin
 INCL_DIR = src/include
 OBJ_DIR = build
 ISODIR = isodir
 ISODIR_BOOT = isodir/boot
 ISODIR_GRUB = isodir/boot/grub
+
+BUILD_ARCHITECTURE = i386
+
+SRC_DIR = src/kernel/$(BUILD_ARCHITECTURE)
 
 C_SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/*/*/*.c)
 CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
@@ -21,7 +24,7 @@ OUT = $(BIN_DIR)/meows.bin
 OUT_ISO = $(addsuffix .iso, $(basename $(OUT)))
 
 # C and Cpp Common Flags
-COMMON_FLAGS = -g -c -O2 -ffreestanding -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
+COMMON_FLAGS = -g -c -O2 -ffreestanding -DCOMPILING -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
 
 CC = i686-elf-gcc
 CFLAGS = -std=gnu99 $(COMMON_FLAGS)
