@@ -1,5 +1,5 @@
 
-#if !defined(_NSTDOUT_H_)
+#ifndef _NSTDOUT_H_
 #define _NSTDOUT_H_
 
 #include <stdarg.h>

@@ -1,6 +1,5 @@
 
 #include "terminal.h"
-#include "nstdmem.h"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -43,12 +42,26 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
-void clear_line(size_t y)
+void terminal_clearline(size_t y)
 {
 	for (size_t x = 0; x < VGA_WIDTH; x++)
 	{
 		const size_t index = y * VGA_WIDTH + x;
 		terminal_buffer[index] = vga_entry(' ', terminal_color);
+	}
+	terminal_column = 0;
+}
+
+void terminal_clearcurrentline()
+{
+	terminal_clearline(terminal_row);
+}
+
+void terminal_clearscreen()
+{
+	for (size_t y = 0; y < VGA_HEIGHT; y++)
+	{
+		terminal_clearline(y);
 	}
 }
 
@@ -61,30 +74,33 @@ void shift_terminalrowsup()
 		}
 	}
 
-	clear_line(VGA_HEIGHT-1);
+	terminal_clearline(VGA_HEIGHT - 1);
 }
  
 void terminal_putchar(char c) 
 {
-  // First Increment and do checks
-  terminal_column++;
-  if (terminal_column == VGA_WIDTH) {
-    terminal_column = 0;
-    terminal_row++;
-  } else if (c == '\n') {
-    terminal_column = -1; // FIXME!!!
-    terminal_row++;
-    return;
-  }
+	// First Increment and do checks
+	if (terminal_column == VGA_WIDTH)
+	{
+		terminal_column = 0;
+		terminal_row++;
+	}
+	else if (c == '\n')
+	{
+		terminal_column = 0; // FIXME!!!
+		terminal_row++;
+		return;
+	}
 
-  if (terminal_row == VGA_HEIGHT) {
-    shift_terminalrowsup();
-    terminal_column = 0;
-    terminal_row--;
-  }
+	if (terminal_row == VGA_HEIGHT) {
+		shift_terminalrowsup();
+		terminal_row--;
+	}
 
-  // Then Put Entry
-  terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	// Then Put Entry
+	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+
+	terminal_column++;
 }
  
 void terminal_write(const char* data, size_t size) 

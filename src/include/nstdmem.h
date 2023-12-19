@@ -1,8 +1,9 @@
 
-#if !defined(_NSTDMEM_H_)
+#ifndef _NSTDMEM_H_
 #define _NSTDMEM_H_
 
 #include <stddef.h>
+#include <nstdmem.h>
 
 int memcmp(const void *, const void *, size_t);
 void *memcpy(void *__restrict, const void *__restrict, size_t);

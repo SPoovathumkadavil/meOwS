@@ -1,9 +1,18 @@
-#include <terminal.h>
+/**
+ * kernel.c
+ *
+ * This is the main file for the kernel.
+ *
+ * Make sure to read the README.md each each kernel archetecture directory
+ * to understand how to build and run the kernel.
+ *
+ * This kernel is based on the tutorial at https://wiki.osdev.org/Bare_Bones
+ */
+
 #include "kernel.h"
-#include <nstdout.h>
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
-#if defined(__linux__)
+#if defined(COMPILING) && defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
@@ -26,12 +35,13 @@ void kernel_main(void)
   /* Initialize terminal interface */
   terminal_initialize();
 
-  terminal_setcolor(VGA_COLOR_RED);
+  terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
 
   terminal_writestring("Things \n");
   terminal_writestring("Yeah Things...\n");
 
   // Splash Screen
   print_splashscreen();
-  printf_("Yeah Its All Good Baby %i \n", 66);
+
+  printf_("\n");
 }

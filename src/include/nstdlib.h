@@ -1,5 +1,5 @@
 
-#if !defined(_NSTDLIB_H_)
+#ifndef _NSTDLIB_H_
 #define _NSTDLIB_H_
 
 __attribute__((__noreturn__)) void abort(void);
