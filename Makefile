@@ -1,58 +1,56 @@
-#NOTE: $@ is right of the :, and $< is the left
-MAKEFLAGS = -s #silent
 
-# Locations
-SRC_DIR = ./src/kernel
-BIN_DIR = ./bin
-OBJ_DIR = ./build
-INCL_DIR = ./src/include
+SRC_DIR = src/kernel
+BIN_DIR = bin
+INCL_DIR = src/include
+OBJ_DIR = build
+ISODIR = isodir
+ISODIR_BOOT = isodir/boot
+ISODIR_GRUB = isodir/boot/grub
 
-ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/*/*.asm) $(wildcard $(SRC_DIR)/*/*/*.asm)
-CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
 C_SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/*/*/*.c)
+CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
+ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/*/*.asm) $(wildcard $(SRC_DIR)/*/*/*.asm)
 
-#Put all the files together in one list
-#This is now a single list of every file that needs to be compiled together
 SRC_FILES := $(ASM_SRC_FILES) $(C_SRC_FILES) $(CPP_SRC_FILES)
+OBJ_FILES := $(subst $(SRC_DIR), $(OBJ_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
 
-OBJ_FILES := $(subst $(SRC_DIR), $(OBJS_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
+OUT = $(BIN_DIR)/meows.bin
+OUT_ISO = $(addprefix .iso, $(basename $(OUT)))
 
-OUT_BIN_FILE = $(BIN_DIR)/os.bin
+# C and Cpp Common Flags
+COMMON_FLAGS = -g -c -O2 -ffreestanding -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
 
-COMMON_FLAGS = -ffreestanding -O2
+CC = i686-elf-gcc
+CFLAGS = -std=gnu99 $(COMMON_FLAGS)
 
-CC = i386-elf-gcc
-CFLAGS = -std=gnu17 $(COMMON_FLAGS)
 CPP = i686-elf-c++
 CPPFLAGS = -fno-exceptions -std=c++17 $(COMMON_FLAGS) -fno-rtti
 
-LDFLAGS = -T src/linker.ld $(COMMON_FLAGS) -nostdlib -lgcc
+LDFLAGS = -T $(SRC_DIR)/linker.ld -ffreestanding -O2 -lgcc -nostdlib
 
 ASM = nasm
-ASMFLAGS = -felf32 -F dwarf -g
+ASM_FLAGS = -felf32 -F dwarf -g
 
-ISO_FILE = meows.iso
+build : $(OUT)
 
-build : $(OUT_BIN_FILE)
-
-$(OUT_BIN_FILE) : $(OBJ_FILES)
-	$(CC) $(LDFLAGS) $(OBJ_FILES) -o $(OUT_BIN_FILE)
+$(OUT) : $(OBJ_FILES)
+	$(CC) $(LDFLAGS) $(OBJ_FILES) -o $(OUT)
 	echo "Linking $(OBJ_FILES) ----------> $@"
 
 # assemble any .asm files and put them in the OBJS_DIR
-$(OBJS_DIR)/%.o : $(SRC_DIR)/%.asm
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.asm
 	mkdir -p $(dir $@)
 	$(ASM) $(ASMFLAGS) $< -o $@
 	echo "$<  ----->  $@"
 
 #compile any .c files and put them in the OBJS_DIR
-$(OBJS_DIR)/%.o : $(SRC_DIR)/%.c 
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c 
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $< -o $@
 	echo "$<  ----->  $@"
 
 #compiile and .cpp files and put them in the OBJS_DIR
-$(OBJS_DIR)/%.o : $(SRC_DIR)/%.cpp 
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp 
 	mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) $< -o $@
 	echo "$<  ----->  $@"
@@ -72,7 +70,28 @@ files:
 #.PHONY tells make that there will never be these files
 .PHONY: clean print run all list files
 
-rebuild: print clean build buildiso
+list:
+	echo "list    ---> list all options"
+	echo "build   ---> build any changes"
+	echo "clean   ---> remove all compiled files"
+	echo "rebuild ---> clean, then build RUN THIS!!"
+	echo "run     ---> run virtual test"
+	echo "all     ---> clean, build, then run"
+	echo "files   ---> show what source files will be used when building"
+	echo "print   ---> prints a sick message"
+	echo "biso    ---> builds the iso from the .bin file"
+	echo "bboot   ---> builds the boot.o"
+
+bboot:
+	i686-elf-as $(SRC_DIR)/boot.s -o $(OBJ_DIR)/boot.o
+
+biso:
+	mkdir -p $(ISODIR_GRUB)
+	cp $(OUT) $(ISODIR_BOOT)/$(notdir $(OUT))
+	cp $(SRC_DIR)/grub.cfg $(ISODIR_GRUB)/grub.cfg
+	grub-mkrescue -o $(notdir $(OUT_ISO)) $(ISODIR)
+
+rebuild: print clean build biso
 	echo "Full Clean and Make done..."
 
 all: rebuild run
@@ -81,23 +100,13 @@ clean:
 	echo "Clean up..."
 	rm -rf $(OBJS_DIR)
 
-	rm -f $(BIN_DIR)/*~ $(BIN_DIR)/*.bin $(BIN_DIR)/*.iso
-
-ISODIR = isodir/boot/grub
-ISOBOOTDIR = isodir/boot
-
-buildiso:
-	mkdir -p $(ISODIR)
-	cp $(OUT_BIN_FILE) $(ISOBOOTDIR)/meows.bin
-	cp src/grub.cfg $(ISODIR)/grub.cfg
-	grub-mkrescue -o $(BIN_DIR)/meows.iso isodir
-	echo "ISO Made :D"
+	rm -f $(BIN_DIR)/*~ $(BIN_DIR)/*.bin
 
 print:
 	# don't fail if figlet isn't installed
-	if which figlet >/dev/null; then figlet -c MeowS; else echo "                        ##### MeowS #####"; fi
+	if which figlet >/dev/null; then figlet -c meOwS; else echo "                        ##### meOwS #####"; fi
 	
 run:
 	echo "Starting QEMU"
-	#qemu-system-i386 -kernel $(OUTPUT_FILE) -serial stdio
-	qemu-system-i386 -cdrom $(BIN_DIR)/$(ISO_FILE)
+	qemu-system-i386 -cdrom OUT_ISO
+
