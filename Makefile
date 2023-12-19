@@ -9,7 +9,7 @@ ISODIR_GRUB = isodir/boot/grub
 
 C_SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/*/*/*.c)
 CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
-ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/*/*.asm) $(wildcard $(SRC_DIR)/*/*/*.asm)
+ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.s) $(wildcard $(SRC_DIR)/*/*.s) $(wildcard $(SRC_DIR)/*/*/*.s)
 
 SRC_FILES := $(ASM_SRC_FILES) $(C_SRC_FILES) $(CPP_SRC_FILES)
 OBJ_FILES := $(subst $(SRC_DIR), $(OBJ_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
@@ -34,6 +34,7 @@ ASM_FLAGS = -felf32 -F dwarf -g
 build : $(OUT)
 
 $(OUT) : $(OBJ_FILES)
+	echo The files: $(OBJ_FILES)
 	$(CC) $(LDFLAGS) $(OBJ_FILES) -o $(OUT)
 	echo "Linking $(OBJ_FILES) ----------> $@"
 
