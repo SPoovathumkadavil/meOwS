@@ -48,5 +48,6 @@ size_t *get_terminal_row();
 size_t *get_terminal_column();
 uint8_t *get_terminal_color();
 uint16_t *get_terminal_buffer();
+void terminal_writecenteredstring(char *data);
 
 #endif // _TERMINAL_H_

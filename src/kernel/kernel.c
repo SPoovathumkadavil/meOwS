@@ -16,9 +16,16 @@ void kernel_main(void)
 	/* Initialize terminal interface */
 	terminal_initialize();
 
-	terminal_setcolor(VGA_COLOR_BLUE);
+	terminal_setcolor(VGA_COLOR_RED);
 
 	terminal_writestring("Things \n");
-	terminal_writestring("Yeah Things...");
+	terminal_writestring("Yeah Things...\n");
+
+  // Splash Screen
+  terminal_writecenteredstring("                 ___            ____  \n");
+  terminal_writecenteredstring(" _ __ ___   ___ / _ \\__      __/ ___| \n");
+  terminal_writecenteredstring("| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
+  terminal_writecenteredstring(" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
+  terminal_writecenteredstring("|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
 
 }

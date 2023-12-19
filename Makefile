@@ -1,4 +1,7 @@
 
+#NOTE: $@ is right of the :, and $< is the left
+MAKEFLAGS = -s #silent
+
 SRC_DIR = src/kernel
 BIN_DIR = bin
 INCL_DIR = src/include

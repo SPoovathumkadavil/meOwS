@@ -99,7 +99,7 @@ void terminal_write(const char* data, size_t size)
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
 }
- 
+
 void terminal_writestring(const char* data) 
 {
 	terminal_write(data, strlen(data));
@@ -124,3 +124,13 @@ uint16_t *get_terminal_buffer()
 {
     return terminal_buffer;
 }
+
+void terminal_writecenteredstring(char *data)
+{
+  size_t len = strlen(data);
+  if (len > VGA_WIDTH-1) return;
+  size_t offset = (size_t) ( (VGA_WIDTH/2) - (len/2) );
+  for (size_t i = 0; i < offset; i++) terminal_putchar(' ');
+  for (size_t i = 0; i < len; i++) terminal_putchar(data[i]);
+}
+
