@@ -1,5 +1,5 @@
 
-#include "nstdmem.h"
+#include "system/nstdmem.h"
 
 size_t strlen(const char *str)
 {

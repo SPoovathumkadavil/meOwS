@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <vga.h>
+#include <system/vga.h>
 
 size_t strlen(const char *str);
 size_t buflen(const uint16_t *buf);

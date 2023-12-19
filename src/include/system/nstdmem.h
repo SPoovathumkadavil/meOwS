@@ -3,7 +3,7 @@
 #define _NSTDMEM_H_
 
 #include <stddef.h>
-#include <nstdmem.h>
+#include <system/nstdmem.h>
 
 int memcmp(const void *, const void *, size_t);
 void *memcpy(void *__restrict, const void *__restrict, size_t);

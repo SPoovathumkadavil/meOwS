@@ -4,7 +4,7 @@
 
 #include <stdarg.h>
 #include <stddef.h>
-#include <terminal.h>
+#include <system/terminal.h>
 #include <stdint.h>
 #include <stdbool.h>
 

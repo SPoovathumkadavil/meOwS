@@ -2,8 +2,8 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include <nstdout.h>
-#include <terminal.h>
+#include <system/nstdout.h>
+#include <system/terminal.h>
 
 void print_splashscreen();
 void kernel_main();
