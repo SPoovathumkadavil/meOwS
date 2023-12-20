@@ -9,26 +9,72 @@
 
 namespace nstd
 {
+    class terminal
+    {
+    private:
+        // The terminal's row.
+        size_t terminal_row;
+        // The terminal's column.
+        size_t terminal_column;
+        // The terminal's color.
+        uint8_t terminal_color;
+        // The terminal's buffer.
+        uint16_t *terminal_buffer;
 
-    size_t strlen(const char *str);
-    size_t buflen(const uint16_t *buf);
-    void terminal_initialize(void);
-    void terminal_setcolor(uint8_t color);
-    void terminal_putentryat(char c, uint8_t color, size_t x, size_t y);
-    void terminal_clearline(size_t y);
-    void terminal_clearcurrentline();
-    void terminal_clearbuffer();
-    void shift_terminalrowsup();
-    void terminal_putchar(char c);
-    void terminal_write(const char *data, size_t size);
-    void terminal_writestring(const char *data);
-    size_t *get_terminal_row();
-    size_t *get_terminal_column();
-    uint8_t *get_terminal_color();
-    uint16_t *get_terminal_buffer();
-    void terminal_writecenteredstring(char *data);
-    void terminal_printsplash();
+    public:
+        terminal()
+        {
+            initialize();
+        }
 
-} // namespace nstd
+        // Gets the length of a string.
+        size_t strlen(const char *str);
+
+        // Gets the length of a buffer.
+        size_t buflen(const uint16_t *buf);
+
+        // Initializes the terminal.
+        void initialize(void);
+
+        // Sets the terminal's color.
+        void set_color(uint8_t color);
+
+        // Puts an entry at a specific location.
+        void put_entryat(char c, uint8_t color, size_t x, size_t y);
+
+        // Clears a line.
+        void clear_line(size_t y);
+
+        // Shifts the terminal's buffer.
+        void shift_rowsup();
+
+        // Clears the current line.
+        void clear_currentline();
+
+        // Clears the terminal's buffer.
+        void clear_buffer();
+
+        // Writes a character to the terminal.
+        void put_char(char c);
+
+        // Write a string given string and size
+        void write(const char *data, size_t size);
+
+        // Writes a string to the terminal.
+        void write_string(const char *data);
+
+        // Writes a centered string to the terminal.
+        void write_centeredstring(const char *data);
+
+        // Prints the splash screen.
+        void print_splash();
+
+        // Getters
+        size_t get_row();
+        size_t get_column();
+        uint8_t get_color();
+        uint16_t *get_buffer();
+    };
+}
 
 #endif // _TERMINAL_H_

@@ -4,15 +4,7 @@
 namespace nstd
 {
 
-	static const size_t VGA_WIDTH = 80;
-	static const size_t VGA_HEIGHT = 25;
-
-	size_t terminal_row;
-	size_t terminal_column;
-	uint8_t terminal_color;
-	uint16_t *terminal_buffer;
-
-	size_t strlen(const char *str)
+	size_t terminal::strlen(const char *str)
 	{
 		size_t len = 0;
 		while (str[len])
@@ -20,7 +12,7 @@ namespace nstd
 		return len;
 	}
 
-	size_t buflen(const uint16_t *buf)
+	size_t terminal::buflen(const uint16_t *buf)
 	{
 		size_t len = 0;
 		while (buf[len])
@@ -28,7 +20,7 @@ namespace nstd
 		return len;
 	}
 
-	void terminal_initialize(void)
+	void terminal::initialize(void)
 	{
 		terminal_row = 0;
 		terminal_column = 0;
@@ -44,18 +36,18 @@ namespace nstd
 		}
 	}
 
-	void terminal_setcolor(uint8_t color)
+	void terminal::set_color(uint8_t color)
 	{
 		terminal_color = color;
 	}
 
-	void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
+	void terminal::put_entryat(char c, uint8_t color, size_t x, size_t y)
 	{
 		const size_t index = y * VGA_WIDTH + x;
 		terminal_buffer[index] = vga_entry(c, color);
 	}
 
-	void terminal_clearline(size_t y)
+	void terminal::clear_line(size_t y)
 	{
 		for (size_t x = 0; x < VGA_WIDTH; x++)
 		{
@@ -65,20 +57,20 @@ namespace nstd
 		terminal_column = 0;
 	}
 
-	void terminal_clearcurrentline()
+	void terminal::clear_currentline()
 	{
-		terminal_clearline(terminal_row);
+		clear_line(terminal_row);
 	}
 
-	void terminal_clearbuffer()
+	void terminal::clear_buffer()
 	{
 		for (size_t y = 0; y < VGA_HEIGHT; y++)
 		{
-			terminal_clearline(y);
+			clear_line(y);
 		}
 	}
 
-	void shift_terminalrowsup()
+	void terminal::shift_rowsup()
 	{
 		// Index Calc = y * VGA_WIDTH + x
 		for (size_t i = 0; i < VGA_HEIGHT * VGA_WIDTH; i += VGA_WIDTH)
@@ -89,10 +81,10 @@ namespace nstd
 			}
 		}
 
-		terminal_clearline(VGA_HEIGHT - 1);
+		clear_line(VGA_HEIGHT - 1);
 	}
 
-	void terminal_putchar(char c)
+	void terminal::put_char(char c)
 	{
 		// First Increment and do checks
 		if (terminal_column == VGA_WIDTH)
@@ -109,70 +101,70 @@ namespace nstd
 
 		if (terminal_row == VGA_HEIGHT)
 		{
-			shift_terminalrowsup();
+			shift_rowsup();
 			terminal_row--;
 		}
 
 		// Then Put Entry
-		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+		put_entryat(c, terminal_color, terminal_column, terminal_row);
 
 		terminal_column++;
 	}
 
-	void terminal_write(const char *data, size_t size)
+	void terminal::write(const char *data, size_t size)
 	{
 		for (size_t i = 0; i < size; i++)
-			terminal_putchar(data[i]);
+			put_char(data[i]);
 	}
 
-	void terminal_writestring(const char *data)
+	void terminal::write_string(const char *data)
 	{
-		terminal_write(data, strlen(data));
+		write(data, strlen(data));
 	}
 
-	size_t *get_terminal_row()
+	size_t terminal::get_row()
 	{
-		return &terminal_row;
+		return terminal_row;
 	}
 
-	size_t *get_terminal_column()
+	size_t terminal::get_column()
 	{
-		return &terminal_column;
+		return terminal_column;
 	}
 
-	uint8_t *get_terminal_color()
+	uint8_t terminal::get_color()
 	{
-		return &terminal_color;
+		return terminal_color;
 	}
 
-	uint16_t *get_terminal_buffer()
+	uint16_t *terminal::get_buffer()
 	{
 		return terminal_buffer;
 	}
 
-	void terminal_writecenteredstring(char *data)
+	void terminal::write_centeredstring(const char *data)
 	{
 		size_t len = strlen(data);
 		if (len > VGA_WIDTH - 1)
 			return;
 		size_t offset = (size_t)((VGA_WIDTH / 2) - (len / 2));
 		for (size_t i = 0; i < offset; i++)
-			terminal_putchar(' ');
+			put_char(' ');
 		for (size_t i = 0; i < len; i++)
-			terminal_putchar(data[i]);
+			put_char(data[i]);
 	}
 
-	void terminal_printsplash()
+	void terminal::print_splash()
 	{
-		terminal_clearbuffer();
-		terminal_setcolor(VGA_COLOR_LIGHT_RED);
+		clear_buffer();
+		set_color(VGA_COLOR_LIGHT_RED);
 		terminal_row = VGA_HEIGHT / 2 - 2;
-		terminal_writecenteredstring((char *)"                 ___            ____  \n");
-		terminal_writecenteredstring((char *)" _ __ ___   ___ / _ \\__      __/ ___| \n");
-		terminal_writecenteredstring((char *)"| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
-		terminal_writecenteredstring((char *)" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
-		terminal_writecenteredstring((char *)"|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
-		terminal_setcolor(VGA_COLOR_LIGHT_GREY);
+		write_centeredstring((char *)"                 ___            ____  \n");
+		write_centeredstring((char *)" _ __ ___   ___ / _ \\__      __/ ___| \n");
+		write_centeredstring((char *)"| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
+		write_centeredstring((char *)" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
+		write_centeredstring((char *)"|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
+		set_color(VGA_COLOR_LIGHT_GREY);
 	}
 
 } // namespace nstd

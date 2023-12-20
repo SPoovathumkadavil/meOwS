@@ -23,14 +23,9 @@
 
 void kernel_main(void)
 {
+
 	/* Initialize terminal interface */
-	nstd::terminal_initialize();
+	nstd::terminal term = nstd::terminal();
 
-	nstd::terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
-
-	nstd::terminal_writestring("Things \n");
-	nstd::terminal_writestring("Yeah Things...\n");
-
-	// Splash Screen
-	nstd::terminal_printsplash();
+	term.print_splash();
 }
