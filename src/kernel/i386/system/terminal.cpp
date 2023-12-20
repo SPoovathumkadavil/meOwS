@@ -9,6 +9,14 @@ size_t terminal_column;
 uint8_t terminal_color;
 uint16_t *terminal_buffer;
 
+size_t strlen(const char *str)
+{
+	size_t len = 0;
+	while (str[len])
+		len++;
+	return len;
+}
+
 size_t buflen(const uint16_t *buf)
 {
 	size_t len = 0;
@@ -156,10 +164,10 @@ void terminal_printsplash()
 	terminal_clearbuffer();
 	terminal_setcolor(VGA_COLOR_LIGHT_RED);
 	terminal_row = VGA_HEIGHT / 2 - 2;
-	terminal_writecenteredstring("                 ___            ____  \n");
-	terminal_writecenteredstring(" _ __ ___   ___ / _ \\__      __/ ___| \n");
-	terminal_writecenteredstring("| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
-	terminal_writecenteredstring(" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
-	terminal_writecenteredstring("|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
+	terminal_writecenteredstring((char *)"                 ___            ____  \n");
+	terminal_writecenteredstring((char *)" _ __ ___   ___ / _ \\__      __/ ___| \n");
+	terminal_writecenteredstring((char *)"| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
+	terminal_writecenteredstring((char *)" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
+	terminal_writecenteredstring((char *)"|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
 	terminal_setcolor(VGA_COLOR_LIGHT_GREY);
 }

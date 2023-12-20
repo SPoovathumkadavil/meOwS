@@ -21,6 +21,11 @@
 #error "This os needs to be compiled with a ix86-elf compiler"
 #endif
 
+extern "C"
+{
+	void kernel_main(void);
+}
+
 void kernel_main(void)
 {
 	/* Initialize terminal interface */
