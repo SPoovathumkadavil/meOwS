@@ -21,27 +21,16 @@
 #error "This os needs to be compiled with a ix86-elf compiler"
 #endif
 
-void print_splashscreen()
-{
-  terminal_writecenteredstring("                 ___            ____  \n");
-  terminal_writecenteredstring(" _ __ ___   ___ / _ \\__      __/ ___| \n");
-  terminal_writecenteredstring("| '_ ` _ \\ / _ \\ | | \\ \\ /\\ / /\\___ \\ \n");
-  terminal_writecenteredstring(" | | | | | |  __/ |_| |\\ V  V /  ___) | \n");
-  terminal_writecenteredstring("|_| |_| |_|\\___|\\___/  \\_/\\_/  |____/ \n");
-}
-
 void kernel_main(void)
 {
-  /* Initialize terminal interface */
-  terminal_initialize();
+	/* Initialize terminal interface */
+	terminal_initialize();
 
-  terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
+	terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
 
-  terminal_writestring("Things \n");
-  terminal_writestring("Yeah Things...\n");
+	terminal_writestring("Things \n");
+	terminal_writestring("Yeah Things...\n");
 
-  // Splash Screen
-  print_splashscreen();
-
-  printf_("\n");
+	// Splash Screen
+	terminal_printsplash();
 }
