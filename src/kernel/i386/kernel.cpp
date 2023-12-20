@@ -23,9 +23,7 @@
 
 void kernel_main(void)
 {
-
-	/* Initialize terminal interface */
-	nstd::terminal term = nstd::terminal();
+	term = nstd::terminal();
 
 	term.print_splash();
 }
