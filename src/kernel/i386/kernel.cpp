@@ -21,21 +21,16 @@
 #error "This os needs to be compiled with a ix86-elf compiler"
 #endif
 
-extern "C"
-{
-	void kernel_main(void);
-}
-
 void kernel_main(void)
 {
 	/* Initialize terminal interface */
-	terminal_initialize();
+	nstd::terminal_initialize();
 
-	terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
+	nstd::terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
 
-	terminal_writestring("Things \n");
-	terminal_writestring("Yeah Things...\n");
+	nstd::terminal_writestring("Things \n");
+	nstd::terminal_writestring("Yeah Things...\n");
 
 	// Splash Screen
-	terminal_printsplash();
+	nstd::terminal_printsplash();
 }
