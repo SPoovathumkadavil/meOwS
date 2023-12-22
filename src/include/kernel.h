@@ -5,7 +5,6 @@
 #include <system/nstdout.h>
 #include <system/terminal.h>
 
-void print_splashscreen();
 void kernel_main();
 
 #endif // !_KERNEL_H_

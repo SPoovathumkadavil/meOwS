@@ -3,6 +3,8 @@
         "printf.h": "c",
         "cstdarg": "c",
         "cstdio": "c",
-        "cwchar": "c"
+        "cwchar": "c",
+        "pit.h": "c",
+        "inlasm.h": "c"
     }
 }

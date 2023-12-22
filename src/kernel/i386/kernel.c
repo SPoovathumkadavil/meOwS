@@ -11,6 +11,8 @@
 
 #include "kernel.h"
 
+#include "system/pit.h"
+
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(COMPILING) && defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -33,4 +35,16 @@ void kernel_main(void)
 
 	// Splash Screen
 	terminal_printsplash();
+
+	printf("Hello, kernel World!\n");
+
+	// PIT
+	printf("PIT: %d\n", read_pit_count());
+	io_wait();
+	printf("PIT: %d\n", read_pit_count());
+	io_wait();
+	set_pit_count(0xFFFF);
+	printf("PIT: %d\n", read_pit_count());
+	io_wait();
+	printf("PIT: %d\n", read_pit_count());
 }
