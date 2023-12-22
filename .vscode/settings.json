@@ -5,6 +5,10 @@
         "cstdio": "c",
         "cwchar": "c",
         "pit.h": "c",
-        "inlasm.h": "c"
+        "inlasm.h": "c",
+        "kernel.h": "c",
+        "logging.h": "c",
+        "idt.h": "c",
+        "isrs.h": "c"
     }
 }

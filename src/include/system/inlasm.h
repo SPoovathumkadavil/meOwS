@@ -6,6 +6,22 @@
 #include <stdbool.h>
 
 #define cli() asm volatile("cli");
+#define IRQ_OFF              \
+    {                        \
+        asm volatile("cli"); \
+    }
+#define IRQ_RES              \
+    {                        \
+        asm volatile("sti"); \
+    }
+#define PAUSE                \
+    {                        \
+        asm volatile("hlt"); \
+    }
+#define IRQS_ON_AND_PAUSE              \
+    {                                  \
+        asm volatile("sti\nhlt\ncli"); \
+    }
 
 /**
  * Read a 8/16/32-bit value at a given memory location using

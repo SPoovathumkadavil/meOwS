@@ -39,12 +39,13 @@ void kernel_main(void)
 	printf("Hello, kernel World!\n");
 
 	// PIT
-	printf("PIT: %d\n", read_pit_count());
-	io_wait();
-	printf("PIT: %d\n", read_pit_count());
-	io_wait();
-	set_pit_count(0xFFFF);
-	printf("PIT: %d\n", read_pit_count());
-	io_wait();
-	printf("PIT: %d\n", read_pit_count());
+	// set_pit_count(1000);
+	// while (true)
+	// {
+	// 	printf("PIT: %d\n", read_pit_count());
+	// 	for (int i = 0; i < 100; i++)
+	// 	{
+	// 		asm("nop");
+	// 	}
+	// }
 }

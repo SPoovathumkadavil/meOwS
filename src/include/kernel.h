@@ -2,7 +2,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include <system/nstdout.h>
+#include <nstd/nstdout.h>
 #include <system/terminal.h>
 
 void kernel_main();
