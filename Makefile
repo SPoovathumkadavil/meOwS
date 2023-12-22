@@ -35,7 +35,7 @@ CPPFLAGS = -fno-exceptions -std=c++17 $(COMMON_FLAGS) -fno-rtti
 LDFLAGS = -T $(SRC_DIR)/linker.ld -ffreestanding -O2 -lgcc -nostdlib
 
 ASM = nasm
-ASM_FLAGS = -felf32 -F dwarf -g
+ASM_FLAGS = -felf32
 
 build : $(OUT)
 
@@ -90,7 +90,7 @@ list:
 	echo "bboot   ---> builds the boot.o"
 
 bboot:
-	i686-elf-as $(SRC_DIR)/boot.s -o $(OBJ_DIR)/boot.o
+	$(ASM) $(ASM_FLAGS) $(SRC_DIR)/boot.s -o $(OBJ_DIR)/boot.o
 
 biso:
 	mkdir -p $(ISODIR_GRUB)
