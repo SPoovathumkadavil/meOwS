@@ -37,15 +37,4 @@ void kernel_main(void)
 	terminal_printsplash();
 
 	printf("Hello, kernel World!\n");
-
-	// PIT
-	// set_pit_count(1000);
-	// while (true)
-	// {
-	// 	printf("PIT: %d\n", read_pit_count());
-	// 	for (int i = 0; i < 100; i++)
-	// 	{
-	// 		asm("nop");
-	// 	}
-	// }
 }
