@@ -15,7 +15,7 @@ SRC_DIR = src/kernel/$(BUILD_ARCHITECTURE)
 
 C_SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/*/*/*.c)
 CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
-ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.s) $(wildcard $(SRC_DIR)/*/*.s) $(wildcard $(SRC_DIR)/*/*/*.s)
+ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/*/*.asm) $(wildcard $(SRC_DIR)/*/*/*.asm)
 
 SRC_FILES := $(ASM_SRC_FILES) $(C_SRC_FILES) $(CPP_SRC_FILES)
 OBJ_FILES := $(subst $(SRC_DIR), $(OBJ_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
@@ -35,7 +35,7 @@ CPPFLAGS = -fno-exceptions -std=c++17 $(COMMON_FLAGS) -fno-rtti
 LDFLAGS = -T $(SRC_DIR)/linker.ld -ffreestanding -O2 -lgcc -nostdlib
 
 ASM = nasm
-ASM_FLAGS = -felf32
+ASM_FLAGS = -felf32 -i$(SRC_DIR)/boot/
 
 build : $(OUT)
 
@@ -90,7 +90,8 @@ list:
 	echo "bboot   ---> builds the boot.o"
 
 bboot:
-	$(ASM) $(ASM_FLAGS) $(SRC_DIR)/boot.s -o $(OBJ_DIR)/boot.o
+	mkdir -p $(OBJ_DIR)/boot
+	$(ASM) $(ASM_FLAGS) $(SRC_DIR)/boot/boot.asm -o $(OBJ_DIR)/boot/boot.o
 
 biso:
 	mkdir -p $(ISODIR_GRUB)
