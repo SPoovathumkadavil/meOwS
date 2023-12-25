@@ -1,5 +1,6 @@
 
 #include "nstd/nstdout.h"
+#include <system/drivers/screen.h>
 
 // define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the
 // printf_config.h header file
@@ -117,7 +118,7 @@ static inline void _out_char(char character, void *buffer, size_t idx, size_t ma
 	(void)maxlen;
 	if (character)
 	{
-		terminal_putchar(character);
+		putchar(character);
 	}
 }
 

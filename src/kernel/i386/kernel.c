@@ -10,8 +10,10 @@
  */
 
 #include "kernel.h"
-
-#include "system/apic.h"
+#include <nstd/nstdout.h>
+#include <nstd/string.h>
+#include <system/drivers/screen.h>
+#include <system/cpu/isr.h>
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(COMPILING) && defined(__linux__)
@@ -25,31 +27,36 @@
 
 void kernel_main(void)
 {
-	/* Initialize terminal interface */
-	terminal_initialize();
 
-	terminal_setcolor(VGA_COLOR_LIGHT_CYAN);
+	isr_install();
+	irq_install();
 
-	terminal_writestring("Things \n");
-	terminal_writestring("Yeah Things...\n");
+	printf("Do Something > ");
+}
 
-	// Splash Screen
-	terminal_printsplash();
-
-	// Initialize the APIC
-	printf("Initializing APIC...\n");
-
-	if (check_apic())
+void user_input(char *input)
+{
+	if (strcmp(input, "END") == 0)
 	{
-		printf("APIC is supported!\n");
-		enable_apic();
-		printf("APIC enabled!\n");
-		printf("APIC base address: %x\n", cpu_get_apic_base());
+		kprint("Stopping the CPU. Bye!\n");
+		asm volatile("hlt");
 	}
-	else
+	else if (strcmp(input, "PAGE") == 0)
 	{
-		printf("APIC is not supported!\n");
+		/* Lesson 22: Code to test kmalloc, the rest is unchanged */
+		uint32_t phys_addr;
+		uint32_t page = kmalloc(1000, 1, &phys_addr);
+		char page_str[16] = "";
+		hex_to_ascii(page, page_str);
+		char phys_str[16] = "";
+		hex_to_ascii(phys_addr, phys_str);
+		kprint("Page: ");
+		kprint(page_str);
+		kprint(", physical address: ");
+		kprint(phys_str);
+		kprint("\n");
 	}
-
-	printf("Hello, kernel World!\n");
+	kprint("You said: ");
+	kprint(input);
+	kprint("\n> ");
 }

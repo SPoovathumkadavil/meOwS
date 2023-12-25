@@ -2,9 +2,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
-#include <nstd/nstdout.h>
-#include <system/terminal.h>
-
 void kernel_main();
+void user_input(char *input);
 
 #endif // !_KERNEL_H_

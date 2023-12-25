@@ -1,14 +1,6 @@
 
 #include "nstd/nstdmem.h"
 
-size_t strlen(const char *str)
-{
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
-}
-
 void *memcpy(void *dstptr, const void *srcptr, size_t size)
 {
 	unsigned char *dst = (unsigned char *)dstptr;
@@ -55,4 +47,25 @@ void *memset(void *bufptr, int value, size_t size)
 	for (size_t i = 0; i < size; i++)
 		buf[i] = (unsigned char)value;
 	return bufptr;
+}
+
+/* This should be computed at link time */
+uint32_t free_mem_addr = 0x10000;
+/* Implementation is just a pointer to some free memory which
+ * keeps growing */
+uint32_t kmalloc(size_t size, int align, uint32_t *phys_addr)
+{
+	/* Pages are aligned to 4K, or 0x1000 */
+	if (align == 1 && (free_mem_addr & 0xFFFFF000))
+	{
+		free_mem_addr &= 0xFFFFF000;
+		free_mem_addr += 0x1000;
+	}
+	/* Save also the physical address */
+	if (phys_addr)
+		*phys_addr = free_mem_addr;
+
+	uint32_t ret = free_mem_addr;
+	free_mem_addr += size; /* Remember to increment the pointer */
+	return ret;
 }

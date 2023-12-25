@@ -17,14 +17,14 @@ C_SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcar
 CPP_SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*/*.cpp) $(wildcard $(SRC_DIR)/*/*/*.cpp)
 ASM_SRC_FILES := $(wildcard $(SRC_DIR)/*.asm) $(wildcard $(SRC_DIR)/*/*.asm) $(wildcard $(SRC_DIR)/*/*/*.asm)
 
-SRC_FILES := $(ASM_SRC_FILES) $(C_SRC_FILES) $(CPP_SRC_FILES)
+SRC_FILES := $(C_SRC_FILES) $(CPP_SRC_FILES) $(ASM_SRC_FILES)
 OBJ_FILES := $(subst $(SRC_DIR), $(OBJ_DIR), $(addsuffix .o, $(basename $(SRC_FILES))))
 
 OUT = $(BIN_DIR)/meows.bin
 OUT_ISO = $(addsuffix .iso, $(basename $(OUT)))
 
 # C and Cpp Common Flags
-COMMON_FLAGS = -g -c -O2 -ffreestanding -DCOMPILING -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
+COMMON_FLAGS = -g -c -ffreestanding -DCOMPILING -lgcc -fno-pic -Werror -Wall -Wextra -I$(INCL_DIR)
 
 CC = i686-elf-gcc
 CFLAGS = -std=gnu99 $(COMMON_FLAGS)
@@ -35,12 +35,12 @@ CPPFLAGS = -fno-exceptions -std=c++17 $(COMMON_FLAGS) -fno-rtti
 LDFLAGS = -T $(SRC_DIR)/linker.ld -ffreestanding -O2 -lgcc -nostdlib
 
 ASM = nasm
-ASM_FLAGS = -felf32 -i$(SRC_DIR)/boot/
+ASMFLAGS = -felf32	
 
 build : $(OUT)
 
 $(OUT) : $(OBJ_FILES)
-	echo The files: $(OBJ_FILES)
+	echo Linking All Objects...
 	$(CC) $(LDFLAGS) $(OBJ_FILES) -o $(OUT)
 	echo "Linking $(OBJ_FILES) ----------> $@"
 
@@ -91,7 +91,7 @@ list:
 
 bboot:
 	mkdir -p $(OBJ_DIR)/boot
-	$(ASM) $(ASM_FLAGS) $(SRC_DIR)/boot/boot.asm -o $(OBJ_DIR)/boot/boot.o
+	$(ASM) $(ASMFLAGS) -i$(SRC_DIR)/boot/ $(SRC_DIR)/boot/boot.asm -o $(OBJ_DIR)/boot/boot.o
 
 biso:
 	mkdir -p $(ISODIR_GRUB)

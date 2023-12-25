@@ -9,6 +9,18 @@
         "kernel.h": "c",
         "logging.h": "c",
         "idt.h": "c",
-        "isrs.h": "c"
+        "isrs.h": "c",
+        "paging.h": "c",
+        "apic.h": "c",
+        "isr.h": "c",
+        "string.h": "c",
+        "stdint.h": "c",
+        "terminal.h": "c",
+        "timer.h": "c",
+        "nstdout.h": "c",
+        "avoidance.h": "c",
+        "keyboard.h": "c",
+        "screen.h": "c",
+        "stdarg.h": "c"
     }
 }
