@@ -11,7 +11,7 @@
 
 #include "kernel.h"
 
-#include "system/pit.h"
+#include "system/apic.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(COMPILING) && defined(__linux__)
@@ -35,6 +35,21 @@ void kernel_main(void)
 
 	// Splash Screen
 	terminal_printsplash();
+
+	// Initialize the APIC
+	printf("Initializing APIC...\n");
+
+	if (check_apic())
+	{
+		printf("APIC is supported!\n");
+		enable_apic();
+		printf("APIC enabled!\n");
+		printf("APIC base address: %x\n", cpu_get_apic_base());
+	}
+	else
+	{
+		printf("APIC is not supported!\n");
+	}
 
 	printf("Hello, kernel World!\n");
 }

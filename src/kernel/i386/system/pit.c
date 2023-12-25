@@ -6,7 +6,7 @@ unsigned read_pit_count(void)
     unsigned count = 0;
 
     // Disable interrupts
-    cli();
+    IRQ_OFF
 
     // al = channel in bits 6 and 7, remaining bits clear
     outb(0x43, 0b0000000);
@@ -20,7 +20,7 @@ unsigned read_pit_count(void)
 void set_pit_count(unsigned count)
 {
     // Disable interrupts
-    cli();
+    IRQ_OFF
 
     // Set low byte
     outb(0x40, count & 0xFF);          // Low byte

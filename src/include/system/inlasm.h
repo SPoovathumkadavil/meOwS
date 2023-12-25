@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define cli() asm volatile("cli");
 #define IRQ_OFF              \
     {                        \
         asm volatile("cli"); \
@@ -22,6 +21,54 @@
     {                                  \
         asm volatile("sti\nhlt\ncli"); \
     }
+
+static inline void __native_flush_tlb_single(unsigned long addr)
+{
+    asm volatile("invlpg (%0)" ::"r"(addr) : "memory");
+}
+
+/**
+ * I know its fun, but don't run this
+ */
+static inline void __native_flush_tlb_global(void)
+{
+    unsigned long tmpreg;
+    asm volatile("mov %%cr3, %0\n\t"
+                 "mov %0, %%cr3"
+                 : "=r"(tmpreg)
+                 : /* no input */
+                 : "memory");
+}
+
+/**
+ * CPUID instruction
+ */
+static inline void cpuid(int code, uint32_t *a, uint32_t *d)
+{
+    asm volatile("cpuid"
+                 : "=a"(*a), "=d"(*d)
+                 : "0"(code)
+                 : "ebx", "ecx");
+}
+
+static const uint32_t CPUID_FLAG_MSR = 1 << 5;
+
+static inline bool cpuHasMSR()
+{
+    static uint32_t a, d; // eax, edx
+    cpuid(1, &a, &d);
+    return d & CPUID_FLAG_MSR;
+}
+
+static inline void cpuGetMSR(uint32_t msr, uint32_t *lo, uint32_t *hi)
+{
+    asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+}
+
+static inline void cpuSetMSR(uint32_t msr, uint32_t lo, uint32_t hi)
+{
+    asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+}
 
 /**
  * Read a 8/16/32-bit value at a given memory location using
