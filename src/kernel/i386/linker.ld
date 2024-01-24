@@ -44,7 +44,7 @@ SECTIONS
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
-		*(.bss)
+		*(.bss*)
 	}
  
 	/* The compiler may produce other sections, by default it will put them in

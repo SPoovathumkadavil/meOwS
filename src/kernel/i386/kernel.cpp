@@ -26,4 +26,5 @@ void kernel_main(void)
 	term = nstd::terminal();
 
 	term.print_splash();
+
 }

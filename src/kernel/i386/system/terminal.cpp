@@ -4,6 +4,11 @@
 namespace nstd
 {
 
+	size_t terminal::terminal_row = 0;
+	size_t terminal::terminal_column = 0;
+	uint8_t terminal::terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	uint16_t *terminal::terminal_buffer = (uint16_t *)0xB8000;
+
 	size_t terminal::strlen(const char *str)
 	{
 		size_t len = 0;
@@ -22,10 +27,6 @@ namespace nstd
 
 	void terminal::initialize(void)
 	{
-		terminal_row = 0;
-		terminal_column = 0;
-		terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-		terminal_buffer = (uint16_t *)0xB8000;
 		for (size_t y = 0; y < VGA_HEIGHT; y++)
 		{
 			for (size_t x = 0; x < VGA_WIDTH; x++)
@@ -120,26 +121,6 @@ namespace nstd
 	void terminal::write_string(const char *data)
 	{
 		write(data, strlen(data));
-	}
-
-	size_t terminal::get_row()
-	{
-		return terminal_row;
-	}
-
-	size_t terminal::get_column()
-	{
-		return terminal_column;
-	}
-
-	uint8_t terminal::get_color()
-	{
-		return terminal_color;
-	}
-
-	uint16_t *terminal::get_buffer()
-	{
-		return terminal_buffer;
 	}
 
 	void terminal::write_centeredstring(const char *data)
