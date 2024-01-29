@@ -119,7 +119,7 @@ namespace nstd {
     (void)maxlen;
     if (character)
     {
-      // terminal::put_char(character);
+      terminal::put_char(character);
     }
   }
 

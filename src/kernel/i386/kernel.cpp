@@ -10,6 +10,7 @@
  */
 
 #include "kernel.h"
+#include "nstd/out.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(COMPILING) && defined(__linux__)
@@ -23,8 +24,8 @@
 
 void kernel_main(void)
 {
-	term = nstd::terminal();
 
-	term.print_splash();
+	nstd::terminal::print_splash();
+	nstd::printf_("Yeah %i\n", 223213);
 
 }
